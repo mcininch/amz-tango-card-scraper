@@ -10,14 +10,18 @@ packages = [{include = "amz_tango_card_scraper"}]
 amz-tcs = "amz_tango_card_scraper.__main__:main"
 
 [tool.poetry.dependencies]
-python = ">=3.9, <4.0"
+python = ">=3.10, <4.0"
 requests = "^2.30.0"
 selenium = "^4.9.1"
-pyyaml = "^6.0"
+pyyaml = ">=6.0.1"
 pyotp = "^2.8.0"
 beautifulsoup4 = "^4.12.2"
 pyvirtualdisplay = "^3.0"
-undetected-chromedriver = "^3.5.0"
+undetected-chromedriver = ">=3.5.5"
+google-auth-oauthlib = ">=1.4.0"
+google-auth = ">=2.53.0"
+cffi = ">=2.0.0"
+setuptools = "^82.0.1"
 
 [tool.poetry.group.dev]
 optional = true

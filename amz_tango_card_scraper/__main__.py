@@ -11,6 +11,7 @@ from amz_tango_card_scraper.amazon_redeemer.amazon_redeemer import (
 from amz_tango_card_scraper.browser.chrome import get_chrome_browser
 from amz_tango_card_scraper.config_parser.config_parser import parse_config
 from amz_tango_card_scraper.gmail_scraper.gmail_scraper import scrape_tango_cards
+from amz_tango_card_scraper.gmail_scraper.gmail_scraper_web import scrape_tango_cards_web
 from amz_tango_card_scraper.message.message_builder import (
     build_amazon_cards_message,
     build_tango_cards_message,
@@ -58,12 +59,32 @@ def main() -> None:
     # Scrape Tango Cards from Gmail
     # **************************************************************
     logger.info("Scraping Tango Cards from Gmail...")
-    tango_cards = scrape_tango_cards(
-        email=config.gmail.get("email", ""),
-        app_password=config.gmail.get("app_password", ""),
-        from_list=config.from_list,
-        trash=config.script.get("trash", False),
-    )
+
+    gmail_password = config.gmail.get("password", "")
+    app_password = config.gmail.get("app_password", "")
+    token_file = config.gmail.get("token_file", "")
+    credentials_file = config.gmail.get("credentials_file", "")
+
+    if gmail_password:
+        # Web mode: uses Chrome browser session (no App Password / OAuth needed)
+        logger.info("Using web-based Gmail scraping (browser login)...")
+        tango_cards = scrape_tango_cards_web(
+            email=config.gmail.get("email", ""),
+            password=gmail_password,
+            from_list=config.from_list,
+            no_images=config.script.get("no_images", True),
+        )
+    else:
+        # IMAP mode: App Password or OAuth2
+        tango_cards = scrape_tango_cards(
+            email=config.gmail.get("email", ""),
+            from_list=config.from_list,
+            trash=config.script.get("trash", False),
+            app_password=app_password,
+            token_file=token_file,
+            credentials_file=credentials_file,
+        )
+
     logger.debug(f"Tango Cards: {tango_cards}")
     if not tango_cards:
         logger.info("No Tango Cards found, exiting...")

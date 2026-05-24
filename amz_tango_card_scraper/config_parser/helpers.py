@@ -7,6 +7,10 @@ def verify_gmail_section(gmail: Dict[str, str]) -> Dict[str, str]:
     """
     Verify the Gmail section of the config file.
 
+    Supports two auth methods:
+      - App Password: requires 'email' + 'app_password'
+      - OAuth2:       requires 'email' + 'token_file' + 'credentials_file'
+
     Args:
         gmail: The Gmail section of the config file.
 
@@ -16,9 +20,20 @@ def verify_gmail_section(gmail: Dict[str, str]) -> Dict[str, str]:
     Returns:
         The verified Gmail section of the config file.
     """
-    required_fields = ("email", "app_password")
-    if not all(field in gmail for field in required_fields):
-        raise ValueError("Missing required field(s) in Gmail section of config file.")
+    if "email" not in gmail:
+        raise ValueError("Missing 'email' in Gmail section of config file.")
+
+    has_password = "password" in gmail and gmail["password"]
+    has_app_password = "app_password" in gmail and gmail["app_password"]
+    has_oauth2 = "token_file" in gmail and "credentials_file" in gmail
+
+    if not has_password and not has_app_password and not has_oauth2:
+        raise ValueError(
+            "Gmail auth missing. Provide one of:\n"
+            "  - 'password' (browser/web mode — easiest)\n"
+            "  - 'app_password' (IMAP + App Password)\n"
+            "  - 'token_file' + 'credentials_file' (OAuth2)"
+        )
     return gmail
 
 
