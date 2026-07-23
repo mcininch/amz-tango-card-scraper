@@ -30,13 +30,17 @@ The project also ships a standalone YouTube downloader built on [yt-dlp](https:/
 ```bash
 poetry run amz-yt-dl "https://www.youtube.com/watch?v=<VIDEO_ID>"
 ```
-Or, if you installed with pip:
+Or download a whole playlist (e.g. your music playlist as audio files):
 ```bash
-python -m amz_tango_card_scraper.youtube_downloader "https://www.youtube.com/watch?v=<VIDEO_ID>"
+poetry run amz-yt-dl -a "https://www.youtube.com/playlist?list=<PLAYLIST_ID>"
 ```
+If you installed with pip, use `python -m amz_tango_card_scraper.youtube_downloader` instead of `poetry run amz-yt-dl`.
+
 Options:
-* `-o`/`--output-dir`: directory to store the downloaded file (defaults to the current directory).
-* `-a`/`--audio-only`: download only the audio track.
+* `-o`/`--output-dir`: directory to store the downloaded files (defaults to the current directory).
+* `-a`/`--audio-only`: download only the audio tracks.
+
+Unavailable videos in a playlist (deleted, private or region-locked) are skipped with a warning instead of aborting the whole download.
 
 Note: [FFmpeg](https://ffmpeg.org/) is recommended so yt-dlp can merge the best video and audio streams; without it, the best single-file format is downloaded instead.
 

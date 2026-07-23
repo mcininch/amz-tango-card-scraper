@@ -5,6 +5,12 @@ YOUTUBE_URL_PATTERN = (
 )
 """Regular expression that matches YouTube video, shorts, live and youtu.be share URLs."""
 
+YOUTUBE_PLAYLIST_URL_PATTERN = (
+    r"^(https?://)?(www\.|m\.|music\.)?(youtube\.com/playlist\?list=[\w-]+"
+    r"|(youtube\.com/watch\?|youtu\.be/[\w-]{11}\?)[^#]*[?&]?list=[\w-]+)"
+)
+"""Regular expression that matches YouTube playlist URLs and video URLs that carry a playlist parameter."""
+
 OUTPUT_TEMPLATE = "%(title)s [%(id)s].%(ext)s"
 """Output file name template used by yt-dlp."""
 
