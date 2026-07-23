@@ -8,6 +8,7 @@ packages = [{include = "amz_tango_card_scraper"}]
 
 [tool.poetry.scripts]
 amz-tcs = "amz_tango_card_scraper.__main__:main"
+amz-yt-dl = "amz_tango_card_scraper.youtube_downloader.__main__:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9, <4.0"
@@ -18,6 +19,7 @@ pyotp = "^2.8.0"
 beautifulsoup4 = "^4.12.2"
 pyvirtualdisplay = "^3.0"
 undetected-chromedriver = "^3.5.0"
+yt-dlp = ">=2024.3.10"
 
 [tool.poetry.group.dev]
 optional = true

@@ -8,6 +8,7 @@ Amazon Tango Card Scraper is a Python project that automates the process of scra
 ## Table of Contents
 * [Features](#features)
 * [Configuration](#configuration)
+* [YouTube Downloader](#youtube-downloader)
 * [Installation with Poetry (recommended)](#installation-with-poetry-recommended)
 * [Installation with pip](#installation-with-pip)
 * [Development Setup](#development-setup)
@@ -23,6 +24,21 @@ Amazon Tango Card Scraper is a Python project that automates the process of scra
 
 ## Configuration
 Before running the script, make sure to configure the necessary settings in the `config.yaml` file. You can use the provided `config.example.yaml` file as a template.
+
+## YouTube Downloader
+The project also ships a standalone YouTube downloader built on [yt-dlp](https://github.com/yt-dlp/yt-dlp). After installing the dependencies, download a video with:
+```bash
+poetry run amz-yt-dl "https://www.youtube.com/watch?v=<VIDEO_ID>"
+```
+Or, if you installed with pip:
+```bash
+python -m amz_tango_card_scraper.youtube_downloader "https://www.youtube.com/watch?v=<VIDEO_ID>"
+```
+Options:
+* `-o`/`--output-dir`: directory to store the downloaded file (defaults to the current directory).
+* `-a`/`--audio-only`: download only the audio track.
+
+Note: [FFmpeg](https://ffmpeg.org/) is recommended so yt-dlp can merge the best video and audio streams; without it, the best single-file format is downloaded instead.
 
 ## Installation with Poetry (recommended)
 To set up the project, follow these steps:
