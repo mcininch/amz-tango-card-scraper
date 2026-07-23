@@ -8,8 +8,10 @@ from .youtube_downloader import download_from_youtube
 
 def main() -> None:
     """Parse command line arguments and download the requested YouTube video or playlist."""
-    parser = argparse.ArgumentParser(description="Download a YouTube video, playlist or their audio tracks.")
-    parser.add_argument("url", help="URL of the YouTube video or playlist to download")
+    parser = argparse.ArgumentParser(
+        description="Download a YouTube video, playlist, all playlists of a channel, or their audio tracks."
+    )
+    parser.add_argument("url", help="URL of the YouTube video, playlist or channel/profile to download")
     parser.add_argument("-o", "--output-dir", default=".", help="directory to store the downloaded files (default: .)")
     parser.add_argument("-a", "--audio-only", action="store_true", help="download only the audio tracks")
     parser.add_argument(

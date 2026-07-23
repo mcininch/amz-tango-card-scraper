@@ -34,6 +34,10 @@ Or download a whole playlist (e.g. your music playlist as audio files):
 ```bash
 poetry run amz-yt-dl -a "https://www.youtube.com/playlist?list=<PLAYLIST_ID>"
 ```
+Or download every playlist of a channel/profile at once (each playlist goes into its own subfolder):
+```bash
+poetry run amz-yt-dl -a "https://www.youtube.com/@<HANDLE>"
+```
 If you installed with pip, use `python -m amz_tango_card_scraper.youtube_downloader` instead of `poetry run amz-yt-dl`.
 
 Options:

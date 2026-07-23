@@ -1,6 +1,12 @@
 """Module for testing the YouTube downloader module."""
 
-from amz_tango_card_scraper.youtube_downloader.helpers import is_valid_youtube_url, is_youtube_playlist_url
+import pytest
+from amz_tango_card_scraper.youtube_downloader.helpers import (
+    is_valid_youtube_url,
+    is_youtube_channel_url,
+    is_youtube_playlist_url,
+    to_channel_playlists_url,
+)
 
 
 def test_is_valid_youtube_url():
@@ -54,3 +60,43 @@ def test_is_youtube_playlist_url():
     ]
     for url in invalid_urls:
         assert not is_youtube_playlist_url(url), url
+
+
+def test_is_youtube_channel_url():
+    # Test case 1: valid YouTube channel/profile URLs
+    valid_urls = [
+        "https://music.youtube.com/@johnmc4699?si=SVAm-SDrsdOWuOBR",
+        "https://www.youtube.com/@johnmc4699",
+        "https://www.youtube.com/@johnmc4699/playlists",
+        "https://www.youtube.com/channel/UC1234567890abcdefghijkl",
+        "https://www.youtube.com/c/SomeChannel",
+        "https://www.youtube.com/user/someuser",
+        "www.youtube.com/@johnmc4699",
+    ]
+    for url in valid_urls:
+        assert is_youtube_channel_url(url), url
+
+    # Test case 2: URLs that are not channels
+    invalid_urls = [
+        "",
+        "not a url",
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "https://www.youtube.com/playlist?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI",
+        "https://youtu.be/dQw4w9WgXcQ",
+        "https://twitter.com/@johnmc4699",
+    ]
+    for url in invalid_urls:
+        assert not is_youtube_channel_url(url), url
+
+
+def test_to_channel_playlists_url():
+    # Test case 1: channel URLs normalize to their playlists tab on www.youtube.com
+    assert (
+        to_channel_playlists_url("https://music.youtube.com/@johnmc4699?si=SVAm-SDrsdOWuOBR")
+        == "https://www.youtube.com/@johnmc4699/playlists"
+    )
+    assert to_channel_playlists_url("www.youtube.com/@johnmc4699") == "https://www.youtube.com/@johnmc4699/playlists"
+
+    # Test case 2: non-channel URLs raise an error
+    with pytest.raises(ValueError):
+        to_channel_playlists_url("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
