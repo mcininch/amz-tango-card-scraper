@@ -12,10 +12,21 @@ def main() -> None:
     parser.add_argument("url", help="URL of the YouTube video or playlist to download")
     parser.add_argument("-o", "--output-dir", default=".", help="directory to store the downloaded files (default: .)")
     parser.add_argument("-a", "--audio-only", action="store_true", help="download only the audio tracks")
+    parser.add_argument(
+        "-c",
+        "--cookies-from-browser",
+        metavar="BROWSER[:PROFILE]",
+        help="read YouTube cookies from this browser (chrome, firefox, edge, ...) to access private playlists",
+    )
     args = parser.parse_args()
 
     try:
-        file_paths = download_from_youtube(args.url, output_dir=args.output_dir, audio_only=args.audio_only)
+        file_paths = download_from_youtube(
+            args.url,
+            output_dir=args.output_dir,
+            audio_only=args.audio_only,
+            cookies_from_browser=args.cookies_from_browser,
+        )
     except Exception as e:
         print(f"Download failed: {e}", file=sys.stderr)
         sys.exit(1)

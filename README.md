@@ -39,6 +39,10 @@ If you installed with pip, use `python -m amz_tango_card_scraper.youtube_downloa
 Options:
 * `-o`/`--output-dir`: directory to store the downloaded files (defaults to the current directory).
 * `-a`/`--audio-only`: download only the audio tracks.
+* `-c`/`--cookies-from-browser`: read YouTube cookies from your browser (`chrome`, `firefox`, `edge`, ...) so private playlists such as your YouTube Music "Liked Music" (`list=LM`) can be downloaded. Close the browser first, then e.g.:
+    ```bash
+    poetry run amz-yt-dl -a -c chrome "https://music.youtube.com/playlist?list=LM"
+    ```
 
 Unavailable videos in a playlist (deleted, private or region-locked) are skipped with a warning instead of aborting the whole download.
 

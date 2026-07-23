@@ -1,7 +1,7 @@
 """Module containing the YouTube downloader."""
 
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import yt_dlp
 
@@ -12,7 +12,9 @@ from .helpers import is_valid_youtube_url, is_youtube_playlist_url
 logger = setup_logger(__name__)
 
 
-def download_from_youtube(url: str, output_dir: str = ".", audio_only: bool = False) -> List[str]:
+def download_from_youtube(
+    url: str, output_dir: str = ".", audio_only: bool = False, cookies_from_browser: Optional[str] = None
+) -> List[str]:
     """
     Download a YouTube video or playlist (or their audio tracks) to the given directory.
 
@@ -24,6 +26,9 @@ def download_from_youtube(url: str, output_dir: str = ".", audio_only: bool = Fa
         url: URL of the YouTube video or playlist to download.
         output_dir: Directory where the downloaded files will be stored. Created if it does not exist.
         audio_only: Whether to download only the audio tracks instead of the full videos.
+        cookies_from_browser: Browser to read YouTube cookies from ("chrome", "firefox", "edge", etc.),
+            optionally with a profile as "BROWSER:PROFILE". Needed for private playlists such as Liked
+            Music, which are only visible while logged in.
 
     Returns:
         Paths to the downloaded files.
@@ -46,6 +51,9 @@ def download_from_youtube(url: str, output_dir: str = ".", audio_only: bool = Fa
         "quiet": True,
         "no_warnings": True,
     }
+    if cookies_from_browser:
+        browser, _, profile = cookies_from_browser.partition(":")
+        ydl_opts["cookiesfrombrowser"] = (browser, profile or None, None, None)
 
     target = "playlist" if is_playlist else "video"
     logger.info("Downloading %s%s from %s...", target, " (audio only)" if audio_only else "", url)
